@@ -1,0 +1,28 @@
+﻿@page
+@model ASPForum.Pages.ReplyModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	@*<meta name="viewport" content="width=device-width" />*@
+	<meta http-equiv="refresh" content="1;url=Index" />
+	<title>Reply</title>
+</head>
+<body>
+	@{
+		switch (Model.Status)
+		{
+			case ASPForum.Pages.ReplyModel.PostStatus.OK:
+				<h1>Post Successful!</h1>
+				break;
+			case ASPForum.Pages.ReplyModel.PostStatus.ContentEmpty:
+				<h1>Post content was empty!</h1>
+				break;
+			default:
+				<h1>what</h1>
+				break;
+		}
+	}
+</body>
+</html>

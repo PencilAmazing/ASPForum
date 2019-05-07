@@ -1,0 +1,56 @@
+body {
+	background-color: rgb(146, 155, 14);
+}
+
+html {
+	font-family: Arial;
+}
+
+.Post {
+	margin-left: 20px;
+	margin-top: 20px;
+	border-style: solid;
+	border-width: 1px;
+	max-width: 600px;
+	background-color: rgb(238, 219, 163);
+}
+
+.PostInfo p {
+	display: inline-block;
+	margin: 10px;
+	margin-top: 10px;
+	margin-bottom: 0px;
+	margin-right: 15px;
+	color: rgb(101, 132, 134);
+}
+
+.PostContent p {
+	margin: 10px;
+	border-style: dashed;
+	border-width: 0.5px;
+	color: rgb(65, 59, 35);
+}
+
+.PostForm {
+	margin-bottom: 25px;
+}
+
+.PostForm form input, form label {
+	margin-bottom: 10px;
+}
+
+.PostForm input, textarea {
+	width: 250px;
+}
+
+.PostForm label {
+	display: inline-block;
+	text-align: left;
+	width: 60px;
+}
+
+.NavLink {
+	display: inline;
+	margin-left: 3px;
+	font-size: 12px;
+}

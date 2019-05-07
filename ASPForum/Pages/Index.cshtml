@@ -1,0 +1,81 @@
+﻿@page
+@model ASPForum.Pages.IndexModel
+@using ASPForum.Post
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Testing page</title>
+	<link href="~/index.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div id="top"></div>
+	<div class="MainTitle">
+		<h1>Olive colored website!</h1>
+		<h3 style="display: inline">Coloured for the brits</h3>
+		<a class="NavLink" href="#bottom">bottom</a> <p>@Request.HttpContext.Connection.RemoteIpAddress.ToString()</p>
+	</div>
+	<div class="PostForm">
+		<form action="Reply" method="post">
+			@Html.AntiForgeryToken()
+			<label for="NameInput">Name:</label>
+			<input id="NameInput" name="NameInput" type="text"><br>
+				
+			<label for="OtherInput">Other:</label>
+			<input id="OtherInput" name="OtherInput" type="text"><br>
+
+			<label for="ContentInput">Content:</label>
+			@*<input id="ContentInput" name="ContentInput" type="text">*@
+			<textarea name="ContentInput" id="ContentInput" rows="5"></textarea><br>
+
+			<input type="submit" value="Submit" />
+		</form>
+	</div>
+
+	@*<div class="Post">
+			<span class="PostInfo"><p>Name</p><p>other</p></span>
+			<span class="PostContent"><p>asdfghjkl</p></span>
+		</div>
+		<div class="Post">
+			<span class="PostInfo"><p>Name</p><p>other</p></span>
+			<span class="PostContent"><p>asdfghjkl</p></span>
+		</div>*@
+
+	<p>Today is @DateTime.Today</p>
+
+	@*
+
+		foreach (var Post in PostCollector.GetPostInformation())
+		{
+			<div class="Post">
+				<div class="PostInfo">
+					<p>Name: @Post.Name</p>
+					<p>Other: @Post.Other</p>
+				</div>
+				<div class="PostContent">
+					<p>@Post.PostContent</p>
+				</div>
+			</div>
+		}
+	*@
+
+	@{ 
+		foreach (var Thread in ThreadManager.GetAllThreads(0))
+		{
+			<div class="Post">
+				<div class="PostInfo">
+					<p>@Thread.ThreadID</p>
+					<p>Name: @Thread.Name</p>
+					<p>Other: @Thread.Other</p>
+				</div>
+				<div class="PostContent">
+					<p>@Thread.Content</p>
+				</div>
+			</div>
+		}
+	}
+
+	<a class="NavLink" href="#top">top</a>
+	<div id="bottom"></div>
+</body>
+</html>
