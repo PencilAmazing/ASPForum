@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Database.sqlite" />
     <None Remove="PostDatabase.sqlite-journal" />
   </ItemGroup>
 
