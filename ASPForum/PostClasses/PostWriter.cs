@@ -38,7 +38,7 @@ namespace ASPForum.Post
 				WriteThread.Parameters.Add(new SQLiteParameter("@Other", Other));
 				WriteThread.Parameters.Add(new SQLiteParameter("@BoardID", BoardID));
 
-				WriteThread.ExecuteNonQuery();
+				WriteThread.ExecuteNonQuery(); // non-unique threadID
 			}
 
 			return true;

@@ -120,7 +120,7 @@ namespace ASPForum.Post
 				FillBoard.ExecuteNonQuery();
 
 				SQLiteCommand FillCounter = dbConnection.CreateCommand();
-				FillCounter.CommandText = "INSERT INTO PostCounter(BoardID) VALUES(1)";
+				FillCounter.CommandText = "INSERT INTO PostCounter(BoardID) VALUES(0)";
 				FillCounter.ExecuteNonQuery();
 			}
 		}
@@ -160,25 +160,25 @@ namespace ASPForum.Post
 		// Return PostCounter of Board
 		public static int GetThreadID(int BoardID)
 		{
-			int ThreadID;
+			int ThreadID = 0;
 			using (SQLiteConnection dbConnection = GetConnection()) {
 				dbConnection.Open();
 				GetPostCount.Connection = dbConnection;
 				GetPostCount.Parameters.Add(new SQLiteParameter("@BoardID", BoardID));
-				ThreadID = System.Convert.ToInt32(GetPostCount.ExecuteScalar());
+				ThreadID = (int)GetPostCount.ExecuteScalar();
 			}
 
 			UpdatePostCounter(BoardID, ThreadID);
 			return ThreadID;
 		}
 
-		// Increments PostCounter by one based on ThreadID given to reduce sql queries
+		// Increments PostCounter by one based on ThreadID given
 		public static void UpdatePostCounter(int BoardID, int ThreadID)
 		{
 			using (SQLiteConnection dbConnection = GetConnection()) {
 				dbConnection.Open();
 				UpdatePostCount.Connection = dbConnection;
-				UpdatePostCount.Parameters.Add(new SQLiteParameter("@Counter", ++ThreadID));
+				UpdatePostCount.Parameters.Add(new SQLiteParameter("@Counter", ThreadID+1));
 				UpdatePostCount.Parameters.Add(new SQLiteParameter("@BoardID", BoardID));
 				UpdatePostCount.ExecuteNonQuery();
 			}
