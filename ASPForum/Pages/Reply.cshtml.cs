@@ -21,7 +21,7 @@ namespace ASPForum.Pages
         }
 
 		[HttpPost]
-		public IActionResult OnPost(string NameInput, string OtherInput, string ContentInput)
+		public IActionResult OnPost(string NameInput, string OtherInput, string ContentInput, int BoardID)
 		{
 			if (string.IsNullOrWhiteSpace(ContentInput)) { // Content is empty
 				Status = PostStatus.ContentEmpty;
@@ -30,7 +30,7 @@ namespace ASPForum.Pages
 			{
 				Status = PostStatus.OK;
 				//Post.PostWriter.WritePostToDatabase(NameInput, ContentInput, OtherInput);
-				Post.PostWriter.WriteThreadToDatabase(0, NameInput, ContentInput, OtherInput);
+				Post.PostWriter.WriteThreadToDatabase(BoardID, NameInput, ContentInput, OtherInput);
 				System.Console.WriteLine("Wrote to database");
 			}
 

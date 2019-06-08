@@ -3,7 +3,7 @@ body {
 }
 
 html {
-	font-family: Arial;
+	font-family: Roboto;
 }
 
 .Post {
@@ -24,11 +24,12 @@ html {
 	color: rgb(101, 132, 134);
 }
 
-.PostContent p {
+.PostContent pre p {
 	margin: 10px;
 	border-style: dashed;
 	border-width: 0.5px;
 	color: rgb(65, 59, 35);
+	font-size: 15px;
 }
 
 .PostForm {

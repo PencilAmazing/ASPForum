@@ -1,4 +1,5 @@
 ﻿using System.Data.SQLite;
+using System.Text.RegularExpressions;
 
 namespace ASPForum.Post
 {
@@ -34,7 +35,9 @@ namespace ASPForum.Post
 				WriteThread.Connection = dbConnection;
 				WriteThread.Parameters.Add(new SQLiteParameter("@ThreadID", ThreadID));
 				WriteThread.Parameters.Add(new SQLiteParameter("@Name", Name));
-				WriteThread.Parameters.Add(new SQLiteParameter("@Content", Content));
+				//WriteThread.Parameters.Add(new SQLiteParameter("@Content", Content));
+				WriteThread.Parameters.Add(new SQLiteParameter("@Content", 
+					Regex.Replace(Content, @"\r\n?|\n","<br/")));
 				WriteThread.Parameters.Add(new SQLiteParameter("@Other", Other));
 				WriteThread.Parameters.Add(new SQLiteParameter("@BoardID", BoardID));
 

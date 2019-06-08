@@ -9,6 +9,13 @@
 	<title>AdminPanel</title>
 </head>
 <body>
-	@await Component.InvokeAsync("AdminLogin")
+	@{ 
+		if (Request.HttpContext.Connection.RemoteIpAddress.ToString() == "127.0.0.1") {
+			@await Component.InvokeAsync("AdminLogin")
+		} else {
+			<h1>Go away</h1>
+		}
+	}
+	@*await Component.InvokeAsync("AdminLogin")*@
 </body>
 </html>
