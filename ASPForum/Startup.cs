@@ -32,7 +32,7 @@ namespace ASPForum
 			//}
 
 			//app.UseDeveloperExceptionPage();
-			app.UseExceptionHandler("/Error");
+			app.UseStatusCodePagesWithReExecute("/Error");
 
 			app.UseFileServer();
 			app.UseAuthentication();
