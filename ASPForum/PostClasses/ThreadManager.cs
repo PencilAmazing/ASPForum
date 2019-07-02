@@ -56,5 +56,30 @@ namespace ASPForum.Post
 
 			return ThreadList;
 		}
+
+		public static List<ThreadInfo> GetThreadReplies(int ThreadID)
+		{
+			var ReplyList = new List<ThreadInfo>();
+			SelectAllPosts.Parameters.Add(new SQLiteParameter("@ThreadID", ThreadID));
+
+			using (SQLiteConnection dbConnection = PostDatabase.GetConnection()) {
+				SelectAllPosts.Connection = dbConnection;
+				dbConnection.Open();
+
+				using (SQLiteDataReader Reader = SelectAllPosts.ExecuteReader()) {
+					while(Reader.Read()) {
+						ReplyList.Add(new ThreadInfo(
+							//System.Convert.ToInt32(Reader.GetInt64(0)), // ThreadID
+							(int)Reader[0],
+							Reader[1].ToString(), // Name
+							Reader[2].ToString(), // Content
+							Reader[3].ToString() // Other
+						));
+					}
+				}
+			}
+
+			return ReplyList;
+		}
 	}
 }

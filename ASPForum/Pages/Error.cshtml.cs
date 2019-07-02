@@ -4,17 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
 
 namespace ASPForum.Pages
 {
-	public class IndexModel : PageModel
-	{
-
-		public PageResult OnGet()
-		{
-			return Page();
-		}
-
-	}
+    public class ErrorModel : PageModel
+    {
+        public void OnGet()
+        {
+			
+        }
+    }
 }

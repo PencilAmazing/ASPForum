@@ -15,7 +15,7 @@ namespace ASPForum
 			services.AddMvc().WithRazorPagesRoot("/Pages");
 			//services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-				.AddCookie(options=>
+				.AddCookie(options =>
 				{
 					options.AccessDeniedPath = "/Index.cshtml";
 					options.Cookie.Name = AdminClasses.AdminManager.LoginCookie;
@@ -31,7 +31,8 @@ namespace ASPForum
 			//	app.UseDeveloperExceptionPage();
 			//}
 
-			app.UseDeveloperExceptionPage();
+			//app.UseDeveloperExceptionPage();
+			app.UseExceptionHandler("/Error");
 
 			app.UseFileServer();
 			app.UseAuthentication();
