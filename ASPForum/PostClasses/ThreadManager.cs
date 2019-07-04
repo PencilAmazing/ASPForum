@@ -25,7 +25,7 @@ namespace ASPForum.Post
 	{
 
 		private static SQLiteCommand SelectAllPosts = new SQLiteCommand("SELECT * FROM Posts " +
-			"WHERE ThreadID=@ThreadID");
+			"WHERE ThreadID=@ThreadID AND BoardID=@BoardID");
 		private static SQLiteCommand SelectAllThreads = new SQLiteCommand("SELECT * FROM Threads " +
 			"WHERE BoardID=@BoardID");
 
@@ -57,10 +57,11 @@ namespace ASPForum.Post
 			return ThreadList;
 		}
 
-		public static List<ThreadInfo> GetThreadReplies(int ThreadID)
+		public static List<ThreadInfo> GetThreadReplies(int BoardID, int ThreadID)
 		{
 			var ReplyList = new List<ThreadInfo>();
 			SelectAllPosts.Parameters.Add(new SQLiteParameter("@ThreadID", ThreadID));
+			SelectAllPosts.Parameters.Add(new SQLiteParameter("@BoardID", BoardID));
 
 			using (SQLiteConnection dbConnection = PostDatabase.GetConnection()) {
 				SelectAllPosts.Connection = dbConnection;

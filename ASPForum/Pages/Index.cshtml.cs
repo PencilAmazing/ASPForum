@@ -11,7 +11,7 @@ namespace ASPForum.Pages
 	public class IndexModel : PageModel
 	{
 
-		public PageResult OnGet()
+		public IActionResult OnGet()
 		{
 			return Page();
 		}

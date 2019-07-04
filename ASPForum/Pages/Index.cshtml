@@ -5,57 +5,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Testing page</title>
-	<link href="~/index.css" rel="stylesheet" type="text/css">
+	<title>OliveBoard</title>
+	<link href="~/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div id="top"></div>
 	<div class="MainTitle">
 		<h1>Olive colored website!</h1>
-		<h3 style="display: inline">Coloured for the brits</h3>
+		<h3 style="display: inline">*Coloured for the brits</h3>
 		<a class="NavLink" href="#bottom">bottom</a>
 		<p>
 			@{
 				if (Request.HttpContext.Connection.RemoteIpAddress.ToString() == "127.0.0.1") {
 					<a href="AdminPanel">To Admin Panel</a>
 				}
-		}
-	</p>
-</div>
-<div class="PostForm">
+			}
+		</p>
+	</div>
 	<form action="Reply" method="post">
 		@Html.AntiForgeryToken()
-		<label for="NameInput">Name:</label>
-		<input id="NameInput" name="NameInput" type="text"><br>
-
-		<label for="OtherInput">Other:</label>
-		<input id="OtherInput" name="OtherInput" type="text"><br>
-
-		<label for="ContentInput">Content:</label>
-		<textarea name="ContentInput" id="ContentInput" rows="5"></textarea><br>
 		<input type="hidden" name="BoardID" value="0" />
-		<input type="submit" value="Submit" />
+
+		<table class="PostForm">
+			<tr>
+				<td><label for="NameInput">Name:</label></td>
+				<td><input id="NameInput" name="NameInput" type="text"></td>
+			</tr>
+			<tr>
+				<td><label for="OtherInput">Other:</label></td>
+				<td><input id="OtherInput" name="OtherInput" type="text"></td>
+			</tr>
+			<tr>
+				<td><label for="ContentInput">Content:</label></td>
+				<td><textarea name="ContentInput" id="ContentInput" rows="5"></textarea></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="Submit" /></td>
+			</tr>
+		</table>
 	</form>
-</div>
 
-<p>Today is @DateTime.Today</p>
+	<p>Today is @DateTime.Today</p>
 
-@{
-	foreach (var Thread in ThreadManager.GetAllThreads(0)) {
-		<div class="Post">
-			<div class="PostInfo">
-				<p><a href="Thread/@Thread.ThreadID">@Thread.ThreadID</a></p>
-				<p>Name: @Thread.Name</p>
-				<p>Other: @Thread.Other</p>
+	@{
+		foreach (var Thread in ThreadManager.GetAllThreads(0)) {
+			<div class="Post">
+				<div class="PostInfo">
+					<p><a href="Thread/@Thread.ThreadID">@Thread.ThreadID</a></p>
+					<p>Name: @Thread.Name</p>
+					<p>Other: @Thread.Other</p>
+				</div>
+				<div class="PostContent">
+					<p>@Thread.Content</p>
+				</div>
 			</div>
-			<div class="PostContent">
-				<p>@Thread.Content</p>
-			</div>
-		</div>
+		}
 	}
-}
 
-<a class="NavLink" href="#top">top</a>
-<div id="bottom"></div>
+	<a class="NavLink" href="#top">top</a>
+	<div id="bottom"></div>
 </body>
 </html>

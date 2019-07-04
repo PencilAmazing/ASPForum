@@ -1,22 +1,67 @@
 ﻿@page "{id:int?}"
 @model ASPForum.Pages.ThreadModel
+@using ASPForum.Post;
 @{
-    Layout = null;
+	Layout = null;
 }
 
 <!DOCTYPE html>
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+	<meta name="viewport" content="width=device-width" />
 	<link href="~/index.css" rel="stylesheet" />
-    <title>Thread</title>
+	<title>Thread</title>
 </head>
 <body>
-	@{ 
-		if(RouteData.Values["id"] == null) {
-			
+	<div id="top"></div>
+	<div class="MainTitle">
+		<h1>Olive colored website!</h1>
+		<h3 style="display: inline">*Coloured for the brits</h3>
+		<a class="NavLink" href="#bottom">bottom</a>
+	</div>
+	<form action=@{"0" + "/Reply/" + RouteData.Values["ID"].ToString()}  method="post">
+		@Html.AntiForgeryToken()
+		<input type="hidden" name="BoardID" value="0" />
+
+		<table class="PostForm">
+			<tr>
+				<td><label for="NameInput">Name:</label></td>
+				<td><input id="NameInput" name="NameInput" type="text"></td>
+			</tr>
+			<tr>
+				<td><label for="OtherInput">Other:</label></td>
+				<td><input id="OtherInput" name="OtherInput" type="text"></td>
+			</tr>
+			<tr>
+				<td><label for="ContentInput">Content:</label></td>
+				<td><textarea name="ContentInput" id="ContentInput" rows="5"></textarea></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="Submit" /></td>
+			</tr>
+		</table>
+	</form>
+
+	<p>Today is @DateTime.Today</p>
+
+	@{
+		foreach (var Thread in ThreadManager.GetThreadReplies(0, 
+			Convert.ToInt32(RouteData.Values["ID"].ToString()))) {
+			<div class="Post">
+				<div class="PostInfo">
+					<p><a href="Thread/@Thread.ThreadID">@Thread.ThreadID</a></p>
+					<p>Name: @Thread.Name</p>
+					<p>Other: @Thread.Other</p>
+				</div>
+				<div class="PostContent">
+					<p>@Thread.Content</p>
+				</div>
+			</div>
 		}
 	}
+
+	<a class="NavLink" href="#top">top</a>
+	<div id="bottom"></div>
 </body>
 </html>

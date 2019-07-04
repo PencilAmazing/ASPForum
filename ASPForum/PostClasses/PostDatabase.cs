@@ -20,12 +20,12 @@ namespace ASPForum.Post
 			"FOREIGN KEY(BoardID) REFERENCES Boards(BoardID) )");
 
 		private static SQLiteCommand CreateThreads = new SQLiteCommand(@"CREATE TABLE Threads( " +
-			"ThreadID INT NOT NULL, " + // Primary key
+			"ThreadID INT NOT NULL, " + // NOT Primary key
 			"Name VARCHAR(40), " +
 			"Content VARCHAR(2400) NOT NULL, " +
 			"Other VARCHAR(12), " +
 			"BoardID INT NOT NULL, " + // Foreign key references owning board
-			"PRIMARY KEY(ThreadID), " +
+			//"PRIMARY KEY(ThreadID), " +
 			"FOREIGN KEY(BoardID) REFERENCES Boards(BoardID) )");
 
 		private static SQLiteCommand CreatePosts = new SQLiteCommand(@"CREATE TABLE Posts( " +
@@ -34,8 +34,10 @@ namespace ASPForum.Post
 			"Content VARCHAR(2400) NOT NULL, " +
 			"Other VARCHAR(40), " +
 			"ThreadID INT NOT NULL, " + // Foreign key references owning thread
-			"PRIMARY KEY(PostID), " +
-			"FOREIGN KEY(ThreadID) REFERENCES Threads(ThreadID) )");
+			"BoardID INT NOT NULL, " + 
+			//"PRIMARY KEY(PostID), " +
+			"FOREIGN KEY(ThreadID) REFERENCES Threads(ThreadID)," +
+			"FOREIGN KEY(BoardID) REFERENCES Boards(BoardID) )");
 
 		private static SQLiteCommand CreateAdmins = new SQLiteCommand(@"CREATE TABLE Admins( " +
 			"Username VARCHAR(40) NOT NULL, " +
