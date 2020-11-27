@@ -31,8 +31,8 @@ namespace ASPForum
 			//	app.UseDeveloperExceptionPage();
 			//}
 
-			//app.UseDeveloperExceptionPage();
-			app.UseStatusCodePagesWithReExecute("/Error");
+			app.UseDeveloperExceptionPage();
+			//app.UseStatusCodePagesWithReExecute("/Error");
 
 			app.UseFileServer();
 			app.UseAuthentication();

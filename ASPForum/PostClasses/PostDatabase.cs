@@ -5,12 +5,11 @@ namespace ASPForum.Post
 	public static class PostDatabase
 	{
 
-		//private static SQLiteConnection PostDatabaseConnection = new SQLiteConnection("Data Source=PostDatabase.sqlite;Version=3;");
 		//private static SQLiteCommand SelectAllPosts = new SQLiteCommand("SELECT * FROM Posts", PostDatabaseConnection);
 
 		/* USE THESE IN EXACT ORDER */
 		private static SQLiteCommand CreateBoards = new SQLiteCommand(@"CREATE TABLE Boards( " +
-			"BoardID INT, " + // Primary key
+			"BoardID INT, " + // Primary key (consider making this nvarchar)
 			"Name VARCHAR(40), " +
 			"PRIMARY KEY(BoardID) )");
 
@@ -25,7 +24,7 @@ namespace ASPForum.Post
 			"Content VARCHAR(2400) NOT NULL, " +
 			"Other VARCHAR(12), " +
 			"BoardID INT NOT NULL, " + // Foreign key references owning board
-			//"PRIMARY KEY(ThreadID), " +
+									   //"PRIMARY KEY(ThreadID), " +
 			"FOREIGN KEY(BoardID) REFERENCES Boards(BoardID) )");
 
 		private static SQLiteCommand CreatePosts = new SQLiteCommand(@"CREATE TABLE Posts( " +
@@ -34,9 +33,9 @@ namespace ASPForum.Post
 			"Content VARCHAR(2400) NOT NULL, " +
 			"Other VARCHAR(40), " +
 			"ThreadID INT NOT NULL, " + // Foreign key references owning thread
-			"BoardID INT NOT NULL, " + 
+			"BoardID INT NOT NULL, " +
 			//"PRIMARY KEY(PostID), " +
-			"FOREIGN KEY(ThreadID) REFERENCES Threads(ThreadID)," +
+			//"FOREIGN KEY(ThreadID) REFERENCES Threads(ThreadID)," +
 			"FOREIGN KEY(BoardID) REFERENCES Boards(BoardID) )");
 
 		private static SQLiteCommand CreateAdmins = new SQLiteCommand(@"CREATE TABLE Admins( " +
@@ -45,11 +44,20 @@ namespace ASPForum.Post
 			"Perms TEXT NOT NULL, " +
 			"PRIMARY KEY(Username) )");
 
+		private static SQLiteCommand DeleteAllTables = new SQLiteCommand(@"DROP TABLE @Target");
+		private static string[] TableList = new string[] {
+			//"Boards", "PostCounter", "Threads", "Posts", "Admins"
+			"Admins", "Posts", "Threads", "PostCounter", "Boards"
+		};
+
 		/*private static SQLiteCommand FindThread = new SQLiteCommand("SELECT COUNT(ThreadID) FROM Threads " +
 			"WHERE ThreadID=@ThreadID AND BoardID=@BoardID");*/
 
 		private static SQLiteCommand FindBoard = new SQLiteCommand("SELECT COUNT(BoardID) FROM Boards " +
 			"WHERE BoardID=@BoardID");
+
+		private static SQLiteCommand FindThread = new SQLiteCommand("SELECT COUNT(ThreadID) FROM Threads " +
+			"WHERE ThreadID=@ThreadID AND BoardID=@BoardID");
 
 		private static SQLiteCommand GetPostCount = new SQLiteCommand("SELECT Counter FROM PostCounter " +
 			"WHERE BoardID=@BoardID");
@@ -58,19 +66,18 @@ namespace ASPForum.Post
 			"SET Counter=@Counter WHERE BoardID=@BoardID");
 
 		public const string FileName = "Database.sqlite";
-		
+
+		//private static SQLiteConnection PostDatabaseConnection = new SQLiteConnection("Data Source=" + FileName + ";Version=3;");
+
 		public static void CheckDatabase()
 		{
 			// Database does not exists so create it
-			if (!System.IO.File.Exists(FileName))
-			{
+			if (!System.IO.File.Exists(FileName)) {
 				SQLiteConnection.CreateFile(FileName);
 				InitDatabase(); // Database is now ready for use
 				FillDatabase(); // Fill with basic data
 				System.Console.WriteLine("Created file");
-			}
-			else
-			{
+			} else {
 				//PostDatabase.Open(); // Database ready for use
 				System.Console.WriteLine("File Exists");
 			}
@@ -78,10 +85,9 @@ namespace ASPForum.Post
 
 		private static void InitDatabase()
 		{
-			using (SQLiteConnection dbConnection = GetConnection())
-			{
-				try
-				{
+			using (SQLiteConnection dbConnection = GetConnection()) {
+				try {
+					//throw new SQLiteException();
 					dbConnection.Open();
 
 					CreateBoards.Connection = dbConnection;
@@ -99,12 +105,13 @@ namespace ASPForum.Post
 					CreateAdmins.Connection = dbConnection;
 					CreateAdmins.ExecuteNonQuery();
 
-				} catch (SQLiteException e) // If anything wrong happens with setup
-				{
+				}
+				catch (SQLiteException e) // If anything wrong happens with setup
+			  {
 					// nuke db
 					// SQLite doesn't allow DROP TABLE *
 					System.IO.File.Delete(FileName);
-					
+
 					throw e; // Throw back exception
 				}
 			}
@@ -126,6 +133,38 @@ namespace ASPForum.Post
 				FillCounter.ExecuteNonQuery();
 			}
 		}
+
+		public static void WipeDatabase()
+		{
+			// Make sure file was actually closed.
+			// Wtf is this
+			//System.GC.Collect();
+			//System.GC.WaitForPendingFinalizers();
+
+			// Delete it
+			using (SQLiteConnection dbConnection = GetConnection()) {
+				dbConnection.Open();
+				using (SQLiteTransaction dbTransaction = dbConnection.BeginTransaction()) {
+
+					foreach (string Table in TableList) {
+						//DeleteAllTables.Connection = dbConnection;
+						// SQLite and other db libraries dont accept table names
+						// for some stupid reason
+						//DeleteAllTables.Parameters.Add(new SQLiteParameter("@Target", Table));
+						//DeleteAllTables.ExecuteNonQuery();
+
+						SQLiteCommand DeleteTable = new SQLiteCommand(dbConnection);
+						DeleteTable.CommandText = string.Format("DROP TABLE {0}", Table);
+						DeleteTable.ExecuteNonQuery();
+					}
+					dbTransaction.Commit();
+				}
+			}
+
+			InitDatabase(); // Remake it
+			FillDatabase(); // Fill it
+		}
+
 		/*public static bool ThreadIDExists(int ThreadID, int BoardID)
 		{
 			int SelectCount = 0;
@@ -153,8 +192,25 @@ namespace ASPForum.Post
 			using (SQLiteConnection dbConnection = GetConnection()) {
 				dbConnection.Open();
 				FindBoard.Connection = dbConnection;
+
 				FindBoard.Parameters.Add(new SQLiteParameter("@BoardID", BoardID));
+
 				SelectCount = (long)FindBoard.ExecuteScalar();
+			}
+			return SelectCount > 0 ? true : false;
+		}
+
+		public static bool ThreadIDExists(int BoardID, int ThreadID)
+		{
+			long SelectCount = 0;
+			using (SQLiteConnection dbConnection = GetConnection()) {
+				dbConnection.Open();
+				FindThread.Connection = dbConnection;
+
+				FindThread.Parameters.Add(new SQLiteParameter("@ThreadID", ThreadID));
+				FindThread.Parameters.Add(new SQLiteParameter("@BoardID", BoardID));
+
+				SelectCount = (long)FindThread.ExecuteScalar();
 			}
 			return SelectCount > 0 ? true : false;
 		}
@@ -180,7 +236,7 @@ namespace ASPForum.Post
 			using (SQLiteConnection dbConnection = GetConnection()) {
 				dbConnection.Open();
 				UpdatePostCount.Connection = dbConnection;
-				UpdatePostCount.Parameters.Add(new SQLiteParameter("@Counter", ThreadID+1));
+				UpdatePostCount.Parameters.Add(new SQLiteParameter("@Counter", ThreadID + 1));
 				UpdatePostCount.Parameters.Add(new SQLiteParameter("@BoardID", BoardID));
 				UpdatePostCount.ExecuteNonQuery();
 			}
@@ -191,6 +247,7 @@ namespace ASPForum.Post
 		{
 			//return new SQLiteConnection("Data Source=PostDatabase.sqlite;Version=3;");
 			return new SQLiteConnection("Data Source=" + FileName + ";Version=3;");
+			//return PostDatabaseConnection;
 		}
 	}
 }

@@ -1,13 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@model ASPForum.Pages.AdminPanelModel
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Secret Admin Panel</title>
-	<link rel="stylesheet" type="text/css" href="~/index.css" />
+	<link rel="stylesheet" type="text/css" href="~/style.css" />
 </head>
 <body>
 	<div>
+		@Model.UserID
 		<form action="AdminPanel/Nuke" method="post">
-			<input type="submit" />
+			@Html.AntiForgeryToken()
+			<input type="submit" value="Nuke it all" />
 		</form>
 	</div>
 </body>

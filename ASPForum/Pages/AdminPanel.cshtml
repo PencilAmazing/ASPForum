@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{handler?}"
 @model ASPForum.Pages.AdminPanelModel
 
 <!DOCTYPE html>
@@ -9,9 +9,10 @@
 	<title>AdminPanel</title>
 </head>
 <body>
-	@{ 
+	@{
 		if (Request.HttpContext.Connection.RemoteIpAddress.ToString() == "127.0.0.1") {
-			@await Component.InvokeAsync("AdminLogin")
+			Model.UserID = "Lolno";
+			@await Component.InvokeAsync("AdminLogin");
 		} else {
 			<h1>Go away</h1>
 		}

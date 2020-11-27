@@ -10,12 +10,14 @@ namespace ASPForum.Pages
 {
     public class ThreadModel : PageModel
     {
+		public string ThreadID;
+
         public IActionResult OnGet()
         {
 			if (RouteData.Values["ID"] == null) {
 				return NotFound();
 			}
-
+			ThreadID = RouteData.Values["ID"].ToString();
 			return Page();
 		}
     }

@@ -1,30 +1,70 @@
-﻿body {
-	background-color: rgb(146, 155, 14);
-	font-family: Roboto, Arial, Helvetica, sans-serif
+﻿/*Global settings*/
+
+body {
+	font-family: Roboto, Arial, Helvetica, sans-serif;
+	/*background-color: rgb(146, 155, 14);*/
+	/*background: #dee3e2;*/
+	/*background-color: rgb(213, 215, 91);*/
+	/*background-color: rgb(219, 211, 67);*/
+	background-color: #3B322C;
+	min-height: 100%;
+	margin: 0;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	/*background: linear-gradient(180deg, darkolivegreen 85%, darkgreen 100%);*/
+	margin-left: 30px;
+	margin-bottom: 30px;
 }
+
+html {
+	min-height: 100%;
+}
+
+p {
+	font-size: 15px;
+	font-weight: bold;
+	/*color: rgb(124, 146, 153);*/
+}
+
+/*Individual posts*/
 
 .Post {
 	margin-left: 20px;
 	margin-top: 20px;
 	margin-bottom: 20px;
-	border-style: solid;
-	border-width: 1px;
+	border-style: double;
+	border-width: 2px;
 	max-width: 600px;
-	background-color: rgb(238, 219, 163);
+	/*background-color: #de7119;*/
+	background-color: rgb(215, 91, 91);
+	/*background: linear-gradient(180deg, grey 0%, darkgrey 50%);*/
+	-moz-box-shadow: 10px 10px;
+	-webkit-box-shadow: 10px 10px;
+	box-shadow: 10px 10px;
 }
 
-.PostInfo p {
-	display: inline-block;
-	margin-left: 10px;
-	margin-top: 10px;
-	margin-bottom: 0px;
-	margin-right: 15px;
-	color: rgb(101, 132, 134);
+.FirstPost {
+	max-width: 70%;
+	margin-left: -25px;
 }
 
-.PostInfo p:first-child {
-	margin-left: 20px;
+.PostInfo {
+	border-bottom: 3px dashed darkgreen;
+	padding-bottom: 5px;
 }
+
+	.PostInfo p {
+		display: inline-block;
+		margin-left: 10px;
+		margin-top: 10px;
+		margin-bottom: 0px;
+		margin-right: 15px;
+		color: black;
+	}
+
+		.PostInfo p:first-child {
+			margin-left: 20px;
+		}
 
 .PostContent {
 	margin-left: 20px;
@@ -32,12 +72,66 @@
 	white-space: pre-line;
 }
 
+/*Post form*/
+
 .PostForm {
 	margin-bottom: 25px;
 	margin-left: auto;
 	margin-right: auto;
+
+	border-width: 2px;
+	border-style: double;
+
+	-moz-box-shadow: 10px 10px;
+	-webkit-box-shadow: 10px 10px;
+	box-shadow: 10px 10px;
+
+	background-color: #958750;
 }
 
+	.PostForm input {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.PostForm textarea {
+		width: 95%;
+	}
+
+/*Misc*/
+
+a {
+	color: #116979;
+	/*border: solid 1px;*/
+	/*background-color: #18b0b0;*/
+	padding: 3px;
+}
+
+	a:link {
+		text-decoration: none;
+	}
+
+	a:visited {
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
+
+	a:active {
+		text-decoration: underline;
+	}
+
 .NavLink {
-	margin-left: 20px;
+	margin-left: 15px;
+}
+
+.Note {
+	display: inline;
+	font-style: italic;
+}
+
+.Title {
+	text-align: center;
 }

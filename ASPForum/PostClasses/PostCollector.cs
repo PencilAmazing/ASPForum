@@ -20,6 +20,7 @@ namespace ASPForum.Post
 
 	}
 
+	/*DEPRECATED*/
 	public static class PostCollector
 	{
 

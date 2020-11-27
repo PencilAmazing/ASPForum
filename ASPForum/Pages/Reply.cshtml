@@ -1,24 +1,27 @@
-﻿@page "{board:int?}/Reply/{id:int?}"
+﻿@page "{handler?}"
 @model ASPForum.Pages.ReplyModel
 
 <!DOCTYPE html>
-
 <html>
 <head>
 	@*<meta name="viewport" content="width=device-width" />*@
-	<meta http-equiv="refresh" content="1;url=Index" />
+	@*<meta http-equiv="refresh" content="1;url=/@Model.ReturnToBoard/Thread/@Model.ReturnToThread" />*@
+	<meta http-equiv="refresh" content="1;url=/Thread/@Model.ReturnToThread" />
 	<link href="~/style.css" rel="stylesheet" />
 	<title>Reply</title>
 </head>
 <body>
 	@{
-		switch (Model.Status)
-		{
+		switch (Model.Status) {
 			case ASPForum.Pages.ReplyModel.PostStatus.OK:
 				<h1>Post Successful!</h1>
 				break;
 			case ASPForum.Pages.ReplyModel.PostStatus.ContentEmpty:
 				<h1>Post content was empty!</h1>
+				break;
+			case ASPForum.Pages.ReplyModel.PostStatus.RequestWasGET:
+				<h1>Try POST</h1>
+				//RedirectToPage("/Index");
 				break;
 			default:
 				<h1>what</h1>

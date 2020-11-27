@@ -3,7 +3,7 @@ body {
 }
 
 html {
-	font-family: Roboto;
+	font-family: sans-serif;
 }
 
 .Post {
@@ -25,7 +25,7 @@ html {
 }
 
 .PostContent pre p {
-	margin: 10px;
+	/*margin: 10px;*/
 	border-style: dashed;
 	border-width: 0.5px;
 	color: rgb(65, 59, 35);
@@ -36,22 +36,27 @@ html {
 	margin-bottom: 25px;
 }
 
-.PostForm form input, form label {
-	margin-bottom: 10px;
-}
+	.PostForm form input, form label {
+		margin-bottom: 10px;
+	}
 
-.PostForm input, textarea {
-	width: 250px;
-}
+	.PostForm input, textarea {
+		width: 250px;
+	}
 
-.PostForm label {
-	display: inline-block;
-	text-align: left;
-	width: 60px;
-}
+	.PostForm label {
+		display: inline-block;
+		text-align: left;
+		width: 60px;
+	}
 
 .NavLink {
 	display: inline;
 	margin-left: 3px;
 	font-size: 12px;
+}
+
+.Note {
+	display: inline;
+	font-style: italic;
 }

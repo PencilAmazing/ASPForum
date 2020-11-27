@@ -7,8 +7,8 @@ namespace ASPForum.Post
 	{
 
 		private static SQLiteCommand WritePost = new SQLiteCommand("INSERT INTO " +
-			"Posts (Name, PostContent, Other) " +
-			"VALUES (@Name, @PostContent, @Other)");
+			"Posts (PostID, Name, Content, Other, ThreadID, BoardID) " +
+			"VALUES (@PostID, @Name, @Content, @Other, @ThreadID, @BoardID)");
 
 		private static SQLiteCommand WriteThread = new SQLiteCommand("INSERT INTO " +
 			"Threads (ThreadID, Name, Content, Other, BoardID) " +
@@ -18,19 +18,20 @@ namespace ASPForum.Post
 		* Request ID from PostCounter based on BoardID
 		* check if it already exists
 		* if not, write to Posts
+		* Return ThreadID which was written for redirects and such
 		*/
-		public static bool WriteThreadToDatabase(int BoardID, string Name, 
+		public static int? WriteThreadToDatabase(int BoardID, string Name,
 			string Content, string Other)
 		{
-			if (Content == string.Empty)
-				return false;
+			if (string.IsNullOrWhiteSpace(Content))
+				return null;
 			if (!PostDatabase.BoardIDExists(BoardID)) // Check if board exists
-				return false;
+				return null;
 
-			using (SQLiteConnection dbConnection = PostDatabase.GetConnection())
-			{
+			int ThreadID;
+			using (SQLiteConnection dbConnection = PostDatabase.GetConnection()) {
 				dbConnection.Open();
-				int ThreadID = PostDatabase.GetThreadID(BoardID); // Get ID for this thread
+				ThreadID = PostDatabase.GetThreadID(BoardID); // Get ID for this thread
 
 				WriteThread.Connection = dbConnection;
 				WriteThread.Parameters.Add(new SQLiteParameter("@ThreadID", ThreadID));
@@ -43,24 +44,32 @@ namespace ASPForum.Post
 				WriteThread.ExecuteNonQuery(); // non-unique threadID
 			}
 
-			return true;
+			//WritePostToDatabase(BoardID, ThreadID, Name, Content, Other)
+
+			return ThreadID;
 		}
 
-		public static bool WritePostToDatabase(string Name, string Content, string Other)
+		public static bool WritePostToDatabase(int OwningBoard, int OwningThread,
+			string Name, string Content, string Other)
 		{
 			//PostDatabase.GetConnection().Open();
 
-			if (Content == string.Empty) return false;
+			if (string.IsNullOrWhiteSpace(Content)) return false;
+			if (!PostDatabase.BoardIDExists(OwningBoard) || !PostDatabase.ThreadIDExists(OwningBoard, OwningThread))
+				return false; // Check if board exists
 
-			using (SQLiteConnection dbConnection = PostDatabase.GetConnection())
-			{
+			using (SQLiteConnection dbConnection = PostDatabase.GetConnection()) {
 				dbConnection.Open();
+				int PostID = PostDatabase.GetThreadID(OwningBoard);
+
 				WritePost.Connection = dbConnection;
-				
 				//WritePost.Parameters.Add("@Name", System.Data.DbType.String).Value = Name;
+				WritePost.Parameters.Add(new SQLiteParameter("@PostID", PostID));
 				WritePost.Parameters.Add(new SQLiteParameter("@Name", Name));
-				WritePost.Parameters.Add(new SQLiteParameter("@PostContent", Content));
+				WritePost.Parameters.Add(new SQLiteParameter("@Content", Content));
 				WritePost.Parameters.Add(new SQLiteParameter("@Other", Other));
+				WritePost.Parameters.Add(new SQLiteParameter("@ThreadID", OwningThread));
+				WritePost.Parameters.Add(new SQLiteParameter("@BoardID", OwningBoard));
 
 				WritePost.ExecuteNonQuery();
 			}

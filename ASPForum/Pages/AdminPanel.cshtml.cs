@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ASPForum.Post;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ASPForum.Pages
 {
 	public class AdminPanelModel : PageModel
     {
-
-		public bool IsAuthenticated = false;
+		public string UserID { get; set; }
+		//public bool IsAuthenticated = false;
 
         public IActionResult OnGet()
         {
@@ -21,13 +22,17 @@ namespace ASPForum.Pages
 			}*/
 			return Page();
         }
-		/*
-		[Route("[action]")]
+
 		[HttpPost]
-		public IActionResult Nuke()
+		public IActionResult OnPostNuke()
 		{
-			
+			if (IsAuthenticated()) PostDatabase.WipeDatabase();
 			return Page();
-		}*/
-    }
+		}
+
+		private bool IsAuthenticated()
+		{
+			return Request.HttpContext.Connection.RemoteIpAddress.ToString() == "127.0.0.1";
+		}
+	}
 }

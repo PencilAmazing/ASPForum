@@ -8,11 +8,12 @@
 	<title>OliveBoard</title>
 	<link href="~/style.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body class="crt">
 	<div id="top"></div>
 	<div class="MainTitle">
-		<h1>Olive colored website!</h1>
-		<h3 style="display: inline">*Coloured for the brits</h3>
+		<h1>Noire Colored Website!</h1>
+		<p class="Note">*Coloured for the brits</p></br>
+		<p class="Note">*Formerly Olive colored</p>
 		<a class="NavLink" href="#bottom">bottom</a>
 		<p>
 			@{
@@ -22,7 +23,13 @@
 			}
 		</p>
 	</div>
-	<form action="Reply" method="post">
+	@*Post Order:
+		BoardID
+		NameInput
+		OtherInput
+		ContentInput
+	*@
+	<form action="~/Reply/Thread" method="post">
 		@Html.AntiForgeryToken()
 		<input type="hidden" name="BoardID" value="0" />
 
@@ -33,14 +40,14 @@
 			</tr>
 			<tr>
 				<td><label for="OtherInput">Other:</label></td>
-				<td><input id="OtherInput" name="OtherInput" type="text"></td>
+				<td>
+					<input id="OtherInput" name="OtherInput" type="text" autocomplete="off">
+					<input type="submit" value="Submit" />
+				</td>
 			</tr>
 			<tr>
 				<td><label for="ContentInput">Content:</label></td>
 				<td><textarea name="ContentInput" id="ContentInput" rows="5"></textarea></td>
-			</tr>
-			<tr>
-				<td><input type="submit" value="Submit" /></td>
 			</tr>
 		</table>
 	</form>
@@ -51,7 +58,7 @@
 		foreach (var Thread in ThreadManager.GetAllThreads(0)) {
 			<div class="Post">
 				<div class="PostInfo">
-					<p><a href="Thread/@Thread.ThreadID">@Thread.ThreadID</a></p>
+					<p>Thread No. <a href="Thread/@Thread.ThreadID">@Thread.ThreadID</a></p>
 					<p>Name: @Thread.Name</p>
 					<p>Other: @Thread.Other</p>
 				</div>
