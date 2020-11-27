@@ -1,16 +1,59 @@
-﻿@page
-@model ASPForum.Pages.Shared._LayoutModel
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
+﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>_Layout</title>
+	<title>OliveBoard</title>
+	<link href="~/style.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body class="crt">
+	<div id="top"></div>
+	<div class="MainTitle">
+		<h1>Noire Colored Website!</h1>
+		<p class="Note">*Coloured for the brits</p></br>
+		<p class="Note">*Formerly Olive colored</p>
+		<a class="NavLink" href="#bottom">bottom</a>
+
+		@RenderSection("AdminLink", false)
+	</div>
+
+	@*Post Order:
+		BoardID
+		NameInput
+		OtherInput
+		ContentInput*@
+
+
+	<form action="@(ViewBag.isThread ? "/Reply/Reply" : "/Reply/Thread")" method="post">
+		@Html.AntiForgeryToken()
+		<input type="hidden" name="BoardID" value="0" />
+		@{ if (ViewBag.isThread) {
+				<input type="hidden" name="ThreadID" value="@Model.ThreadID" />
+				<h3 class="Title">Reply to Thread</h3>
+			}
+		}
+		<table class="PostForm">
+			<tr>
+				<td><label for="NameInput">Name:</label></td>
+				<td><input id="NameInput" name="NameInput" type="text" tabindex=1></td>
+			</tr>
+			<tr>
+				<td><label for="OtherInput">Other:</label></td>
+				<td>
+					<input id="OtherInput" name="OtherInput" type="text" autocomplete="off" tabindex=2>
+					<input type="submit" value="Submit" tabindex=4 />
+				</td>
+			</tr>
+			<tr>
+				<td><label for="ContentInput">Content:</label></td>
+				<td><textarea name="ContentInput" id="ContentInput" rows="5" tabindex=3></textarea></td>
+			</tr>
+		</table>
+	</form>
+
+	<p>Today is @DateTime.UtcNow UTC</p>
+
+	@RenderBody()
+
+	<a class="NavLink" href="#top">top</a>
+	<div id="bottom"></div>
 </body>
 </html>

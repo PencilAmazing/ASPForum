@@ -1,99 +1,49 @@
 ﻿@page "{id:int?}"
+@{
+	Layout = "Shared/_Layout.cshtml";
+	ViewBag.isThread = true;
+}
 @model ASPForum.Pages.ThreadModel
 @using ASPForum.Post;
-@{
-	Layout = null;
-}
 
-<!DOCTYPE html>
-<html>
-<head>
-	<meta name="viewport" content="width=device-width" />
-	<link href="~/style.css" rel="stylesheet" />
-	<style>
-		body {
-			/*background: rgb(213, 215, 91);*/
-		}
-	</style>
-	<title>Thread</title>
-</head>
-<body class="crt">
-	<div id="top"></div>
-	<div class="MainTitle">
-		<h1>Olive colored website!</h1>
-		<p class="Note">*Coloured for the brits</p>
-		<a class="NavLink" href="#bottom">bottom</a>
-	</div>
-	<a href="/">Back to index</a>
-	@*
-		Parameter order:
-		BoardID
-		ThreadID
-		NameInput
-		OtherInput
-		ContentInput
-	*@
+@*@section FormHeader{
 	<form action="../Reply/Reply" method="post">
 		@Html.AntiForgeryToken()
 		<input type="hidden" name="BoardID" value="0" />
 		<input type="hidden" name="ThreadID" value="@Model.ThreadID" />
 		<h3 class="Title">Reply to Thread</h3>
-		<table class="PostForm">
-			<tr>
-				<td><label for="NameInput">Name:</label></td>
-				<td><input id="NameInput" name="NameInput" type="text"></td>
-			</tr>
-			<tr>
-				<td><label for="OtherInput">Other:</label></td>
-				<td>
-					<input id="OtherInput" name="OtherInput" type="text" autocomplete="off">
-					<input type="submit" value="Submit" />
-				</td>
-			</tr>
-			<tr>
-				<td><label for="ContentInput">Content:</label></td>
-				<td><textarea name="ContentInput" id="ContentInput" rows="5"></textarea></td>
-			</tr>
-		</table>
-	</form>
+}*@
 
-	<p>Today is @DateTime.Today</p>
+@{
+	var Threads = ThreadManager.GetThreadReplies(0, Convert.ToInt32(RouteData.Values["ID"].ToString()));
+	if (Threads.Count == 0) { return; };
 
-	@{
-		var Threads = ThreadManager.GetThreadReplies(0, Convert.ToInt32(RouteData.Values["ID"].ToString()));
-		if (Threads.Count == 0) { return; };
+	// Deal with first occurrence
+	<div class="Post FirstPost">
+		<div class="PostInfo">
+			<p><a href="#@Threads[0].ThreadID">@Threads[0].ThreadID</a></p>
+			<p>Name: @Threads[0].Name</p>
+			<p>Other: @Threads[0].Other</p>
+		</div>
+		<div class="PostContent">
+			<p>@Threads[0].Content</p>
+		</div>
+	</div>
 
-		// Deal with first occurrence
-		<div class="Post FirstPost">
+	// Remove first post since it was already handled
+	Threads.RemoveAt(0);
+
+	// Continue with rest (if any)
+	foreach (var Thread in Threads) {
+		<div class="Post">
 			<div class="PostInfo">
-				<p><a href="#@Threads[0].ThreadID">@Threads[0].ThreadID</a></p>
-				<p>Name: @Threads[0].Name</p>
-				<p>Other: @Threads[0].Other</p>
+				<p><a href="#@Thread.ThreadID">@Thread.ThreadID</a></p>
+				<p>Name: @Thread.Name</p>
+				<p>Other: @Thread.Other</p>
 			</div>
 			<div class="PostContent">
-				<p>@Threads[0].Content</p>
+				<p>@Thread.Content</p>
 			</div>
 		</div>
-
-		// Remove first post since it was already handled
-		Threads.RemoveAt(0);
-
-		// Continue with rest (if any)
-		foreach (var Thread in Threads) {
-			<div class="Post">
-				<div class="PostInfo">
-					<p><a href="#@Thread.ThreadID">@Thread.ThreadID</a></p>
-					<p>Name: @Thread.Name</p>
-					<p>Other: @Thread.Other</p>
-				</div>
-				<div class="PostContent">
-					<p>@Thread.Content</p>
-				</div>
-			</div>
-		}
 	}
-
-	<a class="NavLink" href="#top">top</a>
-	<div id="bottom"></div>
-</body>
-</html>
+}

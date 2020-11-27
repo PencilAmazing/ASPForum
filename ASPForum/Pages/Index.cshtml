@@ -1,75 +1,30 @@
 ﻿@page
+@{
+	Layout = "Shared/_Layout.cshtml";
+	ViewBag.isThread = false;
+}
 @model ASPForum.Pages.IndexModel
 @using ASPForum.Post
-
-<!DOCTYPE html>
-<html>
-<head>
-	<title>OliveBoard</title>
-	<link href="~/style.css" rel="stylesheet" type="text/css">
-</head>
-<body class="crt">
-	<div id="top"></div>
-	<div class="MainTitle">
-		<h1>Noire Colored Website!</h1>
-		<p class="Note">*Coloured for the brits</p></br>
-		<p class="Note">*Formerly Olive colored</p>
-		<a class="NavLink" href="#bottom">bottom</a>
-		<p>
-			@{
-				if (Request.HttpContext.Connection.RemoteIpAddress.ToString() == "127.0.0.1") {
-					<a href="AdminPanel">To Admin Panel</a>
-				}
+@section AdminLink{
+	<p>
+		@{
+			if (Request.HttpContext.Connection.RemoteIpAddress.ToString() == "127.0.0.1") {
+				<a href="AdminPanel">To Admin Panel</a>
 			}
-		</p>
-	</div>
-	@*Post Order:
-		BoardID
-		NameInput
-		OtherInput
-		ContentInput
-	*@
-	<form action="~/Reply/Thread" method="post">
-		@Html.AntiForgeryToken()
-		<input type="hidden" name="BoardID" value="0" />
-
-		<table class="PostForm">
-			<tr>
-				<td><label for="NameInput">Name:</label></td>
-				<td><input id="NameInput" name="NameInput" type="text"></td>
-			</tr>
-			<tr>
-				<td><label for="OtherInput">Other:</label></td>
-				<td>
-					<input id="OtherInput" name="OtherInput" type="text" autocomplete="off">
-					<input type="submit" value="Submit" />
-				</td>
-			</tr>
-			<tr>
-				<td><label for="ContentInput">Content:</label></td>
-				<td><textarea name="ContentInput" id="ContentInput" rows="5"></textarea></td>
-			</tr>
-		</table>
-	</form>
-
-	<p>Today is @DateTime.Today</p>
-
-	@{
-		foreach (var Thread in ThreadManager.GetAllThreads(0)) {
-			<div class="Post">
-				<div class="PostInfo">
-					<p>Thread No. <a href="Thread/@Thread.ThreadID">@Thread.ThreadID</a></p>
-					<p>Name: @Thread.Name</p>
-					<p>Other: @Thread.Other</p>
-				</div>
-				<div class="PostContent">
-					<p>@Thread.Content</p>
-				</div>
-			</div>
 		}
+	</p>
+}
+@{
+	foreach (var Thread in ThreadManager.GetAllThreads(0)) {
+		<div class="Post">
+			<div class="PostInfo">
+				<p>Thread No. <a href="Thread/@Thread.ThreadID">@Thread.ThreadID</a></p>
+				<p>Name: @Thread.Name</p>
+				<p>Other: @Thread.Other</p>
+			</div>
+			<div class="PostContent">
+				<p>@Thread.Content</p>
+			</div>
+		</div>
 	}
-
-	<a class="NavLink" href="#top">top</a>
-	<div id="bottom"></div>
-</body>
-</html>
+}
