@@ -6,7 +6,8 @@ body {
 	/*background: #dee3e2;*/
 	/*background-color: rgb(213, 215, 91);*/
 	/*background-color: rgb(219, 211, 67);*/
-	background-color: #3B322C;
+	/*background-color: #3B322C;*/
+	background-color: rgb(57, 24, 31);
 	min-height: 100%;
 	margin: 0;
 	background-repeat: no-repeat;
@@ -29,18 +30,22 @@ p {
 /*Individual posts*/
 
 .Post {
+	font-family: Consolas, Arial, sans-serif;
 	margin-left: 20px;
 	margin-top: 20px;
 	margin-bottom: 20px;
-	border-style: double;
-	border-width: 2px;
+	/*border-style: outset;*/
+	border-color: rgb(153, 75, 11);
+	background-color: rgb(57, 24, 31);
+	/*background-color: rgb(244, 162, 97);*/
+	/*border-width: 4px;*/
 	max-width: 600px;
 	/*background-color: #de7119;*/
-	background-color: rgb(215, 91, 91);
+	/*background-color: rgb(215, 91, 91);*/
 	/*background: linear-gradient(180deg, grey 0%, darkgrey 50%);*/
-	-moz-box-shadow: 10px 10px;
+	/*-moz-box-shadow: 10px 10px;
 	-webkit-box-shadow: 10px 10px;
-	box-shadow: 10px 10px;
+	box-shadow: 10px 10px;*/
 }
 
 .FirstPost {
@@ -49,8 +54,21 @@ p {
 }
 
 .PostInfo {
-	border-bottom: 3px dashed darkgreen;
 	padding-bottom: 5px;
+	margin-left: 40px;
+	display: inline-block;
+	background-color: rgb(244, 162, 97);
+	border-style: outset;
+	border-width: 4px;
+	border-color: rgb(153, 75, 11);
+	/*border-bottom: 2px solid black;*/
+	border-bottom: none;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	/*-moz-box-shadow: 6px 0px 6px;
+	-webkit-box-shadow: 6px 0px 6px;
+	box-shadow: 6px 0px 6px;*/
 }
 
 	.PostInfo p {
@@ -65,11 +83,30 @@ p {
 		.PostInfo p:first-child {
 			margin-left: 20px;
 		}
+		
+		.PostInfo p:last-child {
+			margin-right: 50px;
+		}
 
 .PostContent {
 	margin-left: 20px;
-	margin-top: 5px;
+	padding-left: 40px;
+	margin-top: -4px;
+	/*margin-top: 5px;*/
 	white-space: pre-line;
+	background-color: rgb(244, 162, 97);
+	border-width: 4px;
+	border-style: outset;
+	border-color: rgb(153, 75, 11);
+
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+
+	-moz-box-shadow: 8px 8px 8px;
+	-webkit-box-shadow: 8px 8px 8px;
+	box-shadow: 8px 8px 8px;
+	/*border-top: none;*/
 }
 
 /*Post form*/
@@ -78,15 +115,15 @@ p {
 	margin-bottom: 25px;
 	margin-left: auto;
 	margin-right: auto;
-
-	border-width: 2px;
-	border-style: double;
-
+	border-width: 4px;
+	border-style: outset;
 	-moz-box-shadow: 10px 10px;
 	-webkit-box-shadow: 10px 10px;
 	box-shadow: 10px 10px;
-
-	background-color: #958750;
+	/*background-color: #958750;*/
+	/*border-color: #70653A;*/
+	background-color: rgb(243, 167, 18);
+	border-color: rgb(129, 88, 10);
 }
 
 	.PostForm input {
@@ -108,19 +145,23 @@ a {
 }
 
 	a:link {
-		text-decoration: none;
+		text-decoration: underline;
 	}
 
 	a:visited {
-		text-decoration: none;
+		text-decoration: underline;
 	}
 
 	a:hover {
 		text-decoration: underline;
+		-moz-text-decoration-style: double;
+		text-decoration-style: double;
 	}
 
 	a:active {
 		text-decoration: underline;
+		-moz-text-decoration-style: double;
+		text-decoration-style: double;
 	}
 
 .NavLink {

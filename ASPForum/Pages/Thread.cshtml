@@ -35,7 +35,7 @@
 
 	// Continue with rest (if any)
 	foreach (var Thread in Threads) {
-		<div class="Post">
+		<div class="Post" id="@Thread.ThreadID">
 			<div class="PostInfo">
 				<p><a href="#@Thread.ThreadID">@Thread.ThreadID</a></p>
 				<p>Name: @Thread.Name</p>

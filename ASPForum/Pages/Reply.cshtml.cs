@@ -17,6 +17,7 @@ namespace ASPForum.Pages
 		};
 
 		public PostStatus Status = PostStatus.IncorrectID;
+		public int ReturnToPost = -1;
 		public int ReturnToThread;
 		public int ReturnToBoard;
 
@@ -58,7 +59,10 @@ namespace ASPForum.Pages
 				Status = PostStatus.OK;
 				ReturnToBoard = BoardID.Value;
 				ReturnToThread = ThreadID.Value;
-				Post.PostWriter.WritePostToDatabase(BoardID.Value, ThreadID.Value, NameInput, ContentInput, OtherInput);
+				int? PostID = Post.PostWriter.WritePostToDatabase(BoardID.Value, ThreadID.Value, NameInput, ContentInput, OtherInput);
+				if(PostID != null) {
+					ReturnToPost = PostID.Value;
+				}
 			}
 
 			return Page();

@@ -49,18 +49,19 @@ namespace ASPForum.Post
 			return ThreadID;
 		}
 
-		public static bool WritePostToDatabase(int OwningBoard, int OwningThread,
+		public static int WritePostToDatabase(int OwningBoard, int OwningThread,
 			string Name, string Content, string Other)
 		{
 			//PostDatabase.GetConnection().Open();
 
-			if (string.IsNullOrWhiteSpace(Content)) return false;
+			if (string.IsNullOrWhiteSpace(Content)) return -1;
 			if (!PostDatabase.BoardIDExists(OwningBoard) || !PostDatabase.ThreadIDExists(OwningBoard, OwningThread))
-				return false; // Check if board exists
+				return -1; // Check if board exists
 
+			int PostID = -1;
 			using (SQLiteConnection dbConnection = PostDatabase.GetConnection()) {
 				dbConnection.Open();
-				int PostID = PostDatabase.GetThreadID(OwningBoard);
+				PostID = PostDatabase.GetThreadID(OwningBoard);
 
 				WritePost.Connection = dbConnection;
 				//WritePost.Parameters.Add("@Name", System.Data.DbType.String).Value = Name;
@@ -74,7 +75,7 @@ namespace ASPForum.Post
 				WritePost.ExecuteNonQuery();
 			}
 
-			return true;
+			return PostID;
 		}
 	}
 }

@@ -7,9 +7,10 @@
 <body class="crt">
 	<div id="top"></div>
 	<div class="MainTitle">
-		<h1>Noire Colored Website!</h1>
+		<h1>Apple-Grey Colored Website!</h1>
 		<p class="Note">*Coloured for the brits</p></br>
-		<p class="Note">*Formerly Olive colored</p>
+		<p class="Note">*Formerly Olive colored</p></br>
+		<p class="Note">*Hopefully Noire soon...</p></br>
 		<a class="NavLink" href="#bottom">bottom</a>
 
 		@RenderSection("AdminLink", false)
@@ -27,7 +28,8 @@
 		<input type="hidden" name="BoardID" value="0" />
 		@{ if (ViewBag.isThread) {
 				<input type="hidden" name="ThreadID" value="@Model.ThreadID" />
-				<h3 class="Title">Reply to Thread</h3>
+				<a href="/">Back to index</a>
+				<h3 class="MainTitle">Reply to Thread</h3>
 			}
 		}
 		<table class="PostForm">

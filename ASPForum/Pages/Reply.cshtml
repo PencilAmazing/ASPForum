@@ -6,7 +6,7 @@
 <head>
 	@*<meta name="viewport" content="width=device-width" />*@
 	@*<meta http-equiv="refresh" content="1;url=/@Model.ReturnToBoard/Thread/@Model.ReturnToThread" />*@
-	<meta http-equiv="refresh" content="1;url=/Thread/@Model.ReturnToThread" />
+	<meta http-equiv="refresh" content="1;url=/Thread/@Model.ReturnToThread#@(Model.ReturnToPost > -1 ? Model.ReturnToPost : Model.ReturnToThread)" />
 	<link href="~/style.css" rel="stylesheet" />
 	<title>Reply</title>
 </head>
